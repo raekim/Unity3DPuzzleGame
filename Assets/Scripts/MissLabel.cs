@@ -42,7 +42,6 @@ public class MissLabel : MonoBehaviour
         // 이펙트 재생
         MissLabelObject.transform.localPosition = _initialPosition;
 
-        Debug.Log(MissLabelObject.transform.localPosition);
         MissLabelObject.SetActive(true);
 
         yield return FloatUp();

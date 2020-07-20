@@ -76,16 +76,16 @@ public class Puzzle
 
     public void Init()
     {
-        //zLen = answerArray.GetLength(0);
-        //yLen = answerArray.GetLength(1);
-        //xLen = answerArray.GetLength(2);
-        //
-        //breakCount = countBlanksInPuzzle();
-        //
-        //numberClue = new List<NumberClue[,]>();
-        //numberClue.Add(new NumberClue[yLen, xLen]); // front-back;
-        //numberClue.Add(new NumberClue[xLen, zLen]); // top-bottom;
-        //numberClue.Add(new NumberClue[yLen, zLen]); // right-left;
+        zLen = answerArray.GetLength(0);
+        yLen = answerArray.GetLength(1);
+        xLen = answerArray.GetLength(2);
+        
+        breakCount = countBlanksInPuzzle();
+        
+        numberClue = new List<NumberClue[,]>();
+        numberClue.Add(new NumberClue[yLen, xLen]); // front-back;
+        numberClue.Add(new NumberClue[xLen, zLen]); // top-bottom;
+        numberClue.Add(new NumberClue[yLen, zLen]); // right-left;
     }
 
     int countBlanksInPuzzle()

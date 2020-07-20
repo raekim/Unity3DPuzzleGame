@@ -18,7 +18,7 @@ public class PuzzleManager : MonoBehaviour
         puzzleBg = Resources.Load<Material>("Materials/bg");
 
         // 퍼즐 정보 불러오기
-        //puzzle = new Puzzle();
+        puzzle = new Puzzle();
         //puzzle.Init();
         puzzle = SaveLoadManager.LoadPuzzle();
 

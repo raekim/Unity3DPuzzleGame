@@ -54,13 +54,14 @@ public static class SaveLoadManager
                 {
                     for (int j = 0; j < dataNumberClue[face].GetLength(1); ++j)
                     {
+                        puzzle.numberClue[face][i, j] = new Puzzle.NumberClue();
+
                         if (dataNumberClue[face][i, j] == -1)
                         {
                             puzzle.numberClue[face][i, j].number = -1;
                         }
                         else
                         {
-                            puzzle.numberClue[face][i, j] = new Puzzle.NumberClue();
                             puzzle.numberClue[face][i, j].number = dataNumberClue[face][i, j] / 10;
                             puzzle.numberClue[face][i, j].shape = (Puzzle.CLUE_SHAPE)(dataNumberClue[face][i, j] % 10);
                         }

@@ -491,18 +491,23 @@ public class PuzzleSolver
     void EraseClues(Puzzle puzzle, List<Line[,]> linesOnFaces)
     {
         // 필요없는 clue 지우기
-        foreach(var face in linesOnFaces)
+        for (int face = 0; face < 3; ++face)
         {
-            foreach(Line L in face)
+            for (int i = 0; i < linesOnFaces[face].GetLength(0); ++i)
             {
-                if(!L.mark)
+                for (int j = 0; j < linesOnFaces[face].GetLength(1); ++j)
                 {
-                    // mark되지 않은 라인 : 퍼즐 풀이에 쓰이지 않은 라인
-                    var line = L.line;
-                    foreach(puzzleIndex P in line)
+                    Line L = linesOnFaces[face][i, j];
+                    if (!L.mark)
                     {
-                        Debug.Log("Delete");
-                        puzzle.cubes[P.z, P.y, P.x].HideNumberClueOnCertainFace(L.faceType);
+                        // mark되지 않은 라인 : 퍼즐 풀이에 쓰이지 않은 라인
+                        var line = L.line;
+                        foreach (puzzleIndex P in line)
+                        {
+                            // PuzzleData로 저장할 때 이 라인은 빼고 저장하도록 number clue의 숫자를 -1로 설정.
+                            puzzle.numberClue[face][i, j].number = -1;
+                            puzzle.cubes[P.z, P.y, P.x].HideNumberClueOnCertainFace(L.faceType);
+                        }
                     }
                 }
             }
