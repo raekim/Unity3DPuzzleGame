@@ -4,11 +4,12 @@ using UnityEngine;
 
 public class PuzzleManager : MonoBehaviour
 {
-    Puzzle puzzle;  // 플레이 할 퍼즐 정보
-
     public CommandManager commandManager;
     public camRot cameraRot;
     public GameObject buttonsPanel;
+    public string PuzzleFileName;   // 플레이 할 퍼즐 이름
+
+    Puzzle puzzle;  // 플레이 할 퍼즐 정보
     Material puzzleBg;
 
     int currentBreaks = 0;
@@ -18,13 +19,13 @@ public class PuzzleManager : MonoBehaviour
         puzzleBg = Resources.Load<Material>("Materials/bg");
 
         // 퍼즐 정보 불러오기
-        puzzle = new Puzzle();
-        //puzzle.Init();
-        //puzzle = SaveLoadManager.LoadPuzzle();
+        puzzle = SaveLoadManager.LoadPuzzle(PuzzleFileName);
 
-        // 초기 number clue 생성
-        //PuzzleSolver solver = new PuzzleSolver();
-        //solver.ApplyInitialNumberClues(puzzle);
+        if(puzzle == null)
+        {
+            Debug.Log("Error : 퍼즐 불러오기 실패!");
+            Application.Quit();
+        }
 
         // Cube들로 이루어진 퍼즐 생성
         PuzzleGenerator puzzleGenerator = GetComponent<PuzzleGenerator>();
@@ -41,11 +42,6 @@ public class PuzzleManager : MonoBehaviour
                 }
             }
         }
-
-        // 퍼즐 number clue 떼어네기
-        //solver.ProcessPuzzle(puzzle);
-
-        //SaveLoadManager.SavePuzzle(puzzle);
     }
 
     private void Start()

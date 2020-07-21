@@ -506,7 +506,9 @@ public class PuzzleSolver
                         {
                             // PuzzleData로 저장할 때 이 라인은 빼고 저장하도록 number clue의 숫자를 -1로 설정.
                             puzzle.numberClue[face][i, j].number = -1;
+#if SolveTheActualPuzzle
                             puzzle.cubes[P.z, P.y, P.x].HideNumberClueOnCertainFace(L.faceType);
+#endif
                         }
                     }
                 }

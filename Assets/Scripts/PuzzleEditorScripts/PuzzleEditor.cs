@@ -4,19 +4,46 @@ using UnityEngine;
 
 public class PuzzleEditor : MonoBehaviour
 {
-    public string puzzleDataName;
     public GameObject puzzleObject;
     public GameObject CubePrefab;
-    public float offSetX;
-    public float offSetY;
-    public float offSetZ;
+    public GameObject EdgeCube;
+
+    string puzzleDataName;
+    float offSetX;
+    float offSetY;
+    float offSetZ;
 
     Puzzle puzzle;
 
+    public Puzzle GetPuzzle()
+    {
+        return puzzle;
+    }
+
     private void Awake()
     {
-        // 9x9x9 퍼즐 초기화
+        // 3x3x3 퍼즐 초기화
         puzzle = new Puzzle();
+
+        puzzle.answerArray
+        = new int[,,]
+        {
+            {
+            {0,0,0 },
+            {0,0,0 },
+            {0,0,0 }
+            },
+            {
+            {0,0,0 },
+            {0,0,0 },
+            {0,0,0 }
+            },
+            {
+            {0,0,0 },
+            {0,0,0 },
+            {0,0,0 }
+            },
+        };
 
         ClearPuzzle();
 
@@ -26,7 +53,7 @@ public class PuzzleEditor : MonoBehaviour
         offSetY = -puzzle.yLen * .5f + .5f;
         offSetZ = puzzle.zLen * .5f - .5f;
 
-        puzzle.answerArray[4, 4, 4] = 1;
+        puzzle.answerArray[1, 1, 1] = 1;
 
         GeneratePuzzleAnswer(puzzle);
     }
@@ -36,19 +63,12 @@ public class PuzzleEditor : MonoBehaviour
         // 이전 퍼즐 지우기
         ClearPuzzle();
 
-        // 새로운 퍼즐 정보를 9x9x9 배열에 맞게 변환하여 저장
-        for (int z = 0; z < newPuzzle.zLen; ++z)
-        {
-            for (int y = 0; y < newPuzzle.yLen; ++y)
-            {
-                for (int x = 0; x < newPuzzle.xLen; ++x)
-                {
-                    puzzle.answerArray[z, y, x] = newPuzzle.answerArray[z, y, x];
-                }
-            }
-        }
-        
+        puzzle.answerArray = newPuzzle.answerArray;
+
         puzzle.Init();
+
+        // edge 큐브의 사이즈를 퍼즐에 맞춘다
+        EdgeCube.transform.localScale = new Vector3(puzzle.xLen, puzzle.yLen, puzzle.zLen);
 
         offSetX = puzzle.xLen * .5f - .5f;
         offSetY = -puzzle.yLen * .5f + .5f;
@@ -58,115 +78,8 @@ public class PuzzleEditor : MonoBehaviour
         GeneratePuzzleAnswer(puzzle);
     }
 
-    public void ClearPuzzle()
+    void ClearPuzzle()
     {
-        // 답안 배열 모두 0으로 초기화
-        puzzle.answerArray
-        = new int[,,]
-        {
-            {
-            {0,0,0,0,0,0,0,0,0},
-            {0,0,0,0,0,0,0,0,0},
-            {0,0,0,0,0,0,0,0,0},
-            {0,0,0,0,0,0,0,0,0},
-            {0,0,0,0,0,0,0,0,0},
-            {0,0,0,0,0,0,0,0,0},
-            {0,0,0,0,0,0,0,0,0},
-            {0,0,0,0,0,0,0,0,0},
-            {0,0,0,0,0,0,0,0,0},
-            },
-            {
-            {0,0,0,0,0,0,0,0,0},
-            {0,0,0,0,0,0,0,0,0},
-            {0,0,0,0,0,0,0,0,0},
-            {0,0,0,0,0,0,0,0,0},
-            {0,0,0,0,0,0,0,0,0},
-            {0,0,0,0,0,0,0,0,0},
-            {0,0,0,0,0,0,0,0,0},
-            {0,0,0,0,0,0,0,0,0},
-            {0,0,0,0,0,0,0,0,0},
-            },
-            {
-            {0,0,0,0,0,0,0,0,0},
-            {0,0,0,0,0,0,0,0,0},
-            {0,0,0,0,0,0,0,0,0},
-            {0,0,0,0,0,0,0,0,0},
-            {0,0,0,0,0,0,0,0,0},
-            {0,0,0,0,0,0,0,0,0},
-            {0,0,0,0,0,0,0,0,0},
-            {0,0,0,0,0,0,0,0,0},
-            {0,0,0,0,0,0,0,0,0},
-            },
-            {
-            {0,0,0,0,0,0,0,0,0},
-            {0,0,0,0,0,0,0,0,0},
-            {0,0,0,0,0,0,0,0,0},
-            {0,0,0,0,0,0,0,0,0},
-            {0,0,0,0,0,0,0,0,0},
-            {0,0,0,0,0,0,0,0,0},
-            {0,0,0,0,0,0,0,0,0},
-            {0,0,0,0,0,0,0,0,0},
-            {0,0,0,0,0,0,0,0,0},
-            },
-            {
-            {0,0,0,0,0,0,0,0,0},
-            {0,0,0,0,0,0,0,0,0},
-            {0,0,0,0,0,0,0,0,0},
-            {0,0,0,0,0,0,0,0,0},
-            {0,0,0,0,0,0,0,0,0},
-            {0,0,0,0,0,0,0,0,0},
-            {0,0,0,0,0,0,0,0,0},
-            {0,0,0,0,0,0,0,0,0},
-            {0,0,0,0,0,0,0,0,0},
-            },
-            {
-            {0,0,0,0,0,0,0,0,0},
-            {0,0,0,0,0,0,0,0,0},
-            {0,0,0,0,0,0,0,0,0},
-            {0,0,0,0,0,0,0,0,0},
-            {0,0,0,0,0,0,0,0,0},
-            {0,0,0,0,0,0,0,0,0},
-            {0,0,0,0,0,0,0,0,0},
-            {0,0,0,0,0,0,0,0,0},
-            {0,0,0,0,0,0,0,0,0},
-            },
-            {
-            {0,0,0,0,0,0,0,0,0},
-            {0,0,0,0,0,0,0,0,0},
-            {0,0,0,0,0,0,0,0,0},
-            {0,0,0,0,0,0,0,0,0},
-            {0,0,0,0,0,0,0,0,0},
-            {0,0,0,0,0,0,0,0,0},
-            {0,0,0,0,0,0,0,0,0},
-            {0,0,0,0,0,0,0,0,0},
-            {0,0,0,0,0,0,0,0,0},
-            },
-            {
-            {0,0,0,0,0,0,0,0,0},
-            {0,0,0,0,0,0,0,0,0},
-            {0,0,0,0,0,0,0,0,0},
-            {0,0,0,0,0,0,0,0,0},
-            {0,0,0,0,0,0,0,0,0},
-            {0,0,0,0,0,0,0,0,0},
-            {0,0,0,0,0,0,0,0,0},
-            {0,0,0,0,0,0,0,0,0},
-            {0,0,0,0,0,0,0,0,0},
-            },
-            {
-            {0,0,0,0,0,0,0,0,0},
-            {0,0,0,0,0,0,0,0,0},
-            {0,0,0,0,0,0,0,0,0},
-            {0,0,0,0,0,0,0,0,0},
-            {0,0,0,0,0,0,0,0,0},
-            {0,0,0,0,0,0,0,0,0},
-            {0,0,0,0,0,0,0,0,0},
-            {0,0,0,0,0,0,0,0,0},
-            {0,0,0,0,0,0,0,0,0},
-            },
-
-
-        };
-
         // 모든 큐브 오브젝트들 삭제
         foreach (Transform child in puzzleObject.transform)
         {
@@ -216,12 +129,12 @@ public class PuzzleEditor : MonoBehaviour
 
     public void AddNewCube(int[] index)
     {
-        // 새로운 큐브가 9x9x9 범위를 벗어나지 않는지 확인
+        // 새로운 큐브가 edge 큐브의 범위를 벗어나지 않는지 확인
         bool indexLimitCheck = true;
 
         for (int i = 0; i < 3; ++i)
         {
-            indexLimitCheck &= (0 <= index[i] && index[i] < 9);
+            indexLimitCheck &= (0 <= index[i] && index[i] < puzzle.answerArray.GetLength(i));
         }
 
         if (indexLimitCheck && puzzle.answerArray[index[0], index[1], index[2]] == 0)

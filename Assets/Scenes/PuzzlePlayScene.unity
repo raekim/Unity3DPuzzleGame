@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 170076734}
-  m_IndirectSpecularColor: {r: 0.4460094, g: 0.49576652, b: 0.5744551, a: 1}
+  m_IndirectSpecularColor: {r: 0.4460101, g: 0.49576753, b: 0.57445604, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -978,6 +978,11 @@ PrefabInstance:
       propertyPath: buttonsPanel
       value: 
       objectReference: {fileID: 1895938464}
+    - target: {fileID: 8554738097535104992, guid: 9f622c21a92ed0347ae961fd5c28043a,
+        type: 3}
+      propertyPath: PuzzleFileName
+      value: Star
+      objectReference: {fileID: 0}
     - target: {fileID: 8554738097535104993, guid: 9f622c21a92ed0347ae961fd5c28043a,
         type: 3}
       propertyPath: puzzleObject

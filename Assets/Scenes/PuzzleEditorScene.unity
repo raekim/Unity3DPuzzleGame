@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 170076734}
-  m_IndirectSpecularColor: {r: 0.4460094, g: 0.49576652, b: 0.5744551, a: 1}
+  m_IndirectSpecularColor: {r: 0.4460101, g: 0.49576753, b: 0.57445604, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -190,7 +190,18 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 79938560}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 759753908}
+        m_MethodName: SavePuzzleFile
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &79938560
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -367,7 +378,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 430275915}
-  - component: {fileID: 430275916}
   m_Layer: 0
   m_Name: LoadFile
   m_TagString: Untagged
@@ -391,19 +401,6 @@ Transform:
   m_Father: {fileID: 1707455668}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &430275916
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 430275914}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3374b003ee837c14da92e64c61e4f3cb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  loadFileNameText: {fileID: 0}
 --- !u!114 &534669906 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 2927248830117914344, guid: 7fa56092729d84348be76a9d91aa8da4,
@@ -554,6 +551,7 @@ GameObject:
   - component: {fileID: 759753906}
   - component: {fileID: 759753907}
   - component: {fileID: 759753905}
+  - component: {fileID: 759753908}
   m_Layer: 0
   m_Name: EditorManager
   m_TagString: Untagged
@@ -603,13 +601,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b710b61287c48aa45af6ac9abdf1390a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  puzzleDataName: 
   puzzleObject: {fileID: 671383858}
   CubePrefab: {fileID: 2849497022103438159, guid: bff72de56343b6c4396eb09a5a24420a,
     type: 3}
-  offSetX: 0
-  offSetY: 0
-  offSetZ: 0
+  EdgeCube: {fileID: 4081762404184288547}
+--- !u!114 &759753908
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 759753904}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 753e8e43a68080f4bb225c8ce59a9fd5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  loadFileNameText: {fileID: 1564699164}
+  saveFileNameText: {fileID: 1198865486}
+  puzzleEditor: {fileID: 759753907}
 --- !u!1 &776437860
 GameObject:
   m_ObjectHideFlags: 0
@@ -1404,7 +1414,18 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1760949613}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 759753908}
+        m_MethodName: LoadPuzzleFile
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1760949613
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1609,7 +1630,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1944313426}
-  - component: {fileID: 1944313427}
   m_Layer: 0
   m_Name: SaveFile
   m_TagString: Untagged
@@ -1633,18 +1653,6 @@ Transform:
   m_Father: {fileID: 1707455668}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1944313427
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1944313425}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ec500e3f27bc8e94daf330e3b7d8784f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1001 &1955225238
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2121,7 +2129,7 @@ Transform:
   m_GameObject: {fileID: 4081762404184288547}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 9, y: 9, z: 9}
+  m_LocalScale: {x: 3, y: 3, z: 3}
   m_Children:
   - {fileID: 4081762404871594140}
   - {fileID: 4081762404457260447}

@@ -7,11 +7,12 @@ using UnityEngine;
 
 public static class SaveLoadManager
 {
-
     public static void SavePuzzle(Puzzle puzzle, string fileName)
     {
+        fileName += ".txt";
+
         BinaryFormatter bf = new BinaryFormatter();
-        FileStream stream = new FileStream(Application.dataPath + @"\Resources\PuzzleData" + fileName, FileMode.Create);
+        FileStream stream = new FileStream(Application.streamingAssetsPath + @"/" + fileName, FileMode.Create);
 
         PuzzleData data = new PuzzleData(puzzle);
 
@@ -21,58 +22,68 @@ public static class SaveLoadManager
 
     public static Puzzle LoadPuzzle(string fileName)
     {
-        if(File.Exists(Application.dataPath + @"\Resources\PuzzleData" + fileName))
+        fileName += ".txt";
+
+        if (File.Exists(Application.streamingAssetsPath + @"/" + fileName))
         {
             BinaryFormatter bf = new BinaryFormatter();
-            FileStream stream = new FileStream(Application.dataPath + @"\Resources\PuzzleData" + fileName, FileMode.Open);
+            FileStream stream = new FileStream(Application.streamingAssetsPath + @"/" + fileName, FileMode.Open);
 
             PuzzleData data = bf.Deserialize(stream) as PuzzleData;
 
             stream.Close();
 
             // puzzleData를 puzzle로 만들기
-            Puzzle puzzle = new Puzzle();
-
-            puzzle.puzzleName = data.puzzleName;
-            puzzle.answerArray = data.answerArray;
-            puzzle.answerColorIndex = data.answerColorIndex;
-
-            puzzle.zLen = data.zLen;
-            puzzle.yLen = data.yLen;
-            puzzle.xLen = data.xLen;
-            puzzle.breakCount = data.breakCount;
-
-            puzzle.numberClue = new List<Puzzle.NumberClue[,]>();
-            puzzle.numberClue.Add(new Puzzle.NumberClue[puzzle.yLen, puzzle.xLen]); // front-back;
-            puzzle.numberClue.Add(new Puzzle.NumberClue[puzzle.xLen, puzzle.zLen]); // top-bottom;
-            puzzle.numberClue.Add(new Puzzle.NumberClue[puzzle.yLen, puzzle.zLen]); // right-left;
-
-            var dataNumberClue = data.numberClue;
-
-            for (int face = 0; face < 3; ++face)
-            {
-                for (int i = 0; i < dataNumberClue[face].GetLength(0); ++i)
-                {
-                    for (int j = 0; j < dataNumberClue[face].GetLength(1); ++j)
-                    {
-                        puzzle.numberClue[face][i, j] = new Puzzle.NumberClue();
-
-                        if (dataNumberClue[face][i, j] == -1)
-                        {
-                            puzzle.numberClue[face][i, j].number = -1;
-                        }
-                        else
-                        {
-                            puzzle.numberClue[face][i, j].number = dataNumberClue[face][i, j] / 10;
-                            puzzle.numberClue[face][i, j].shape = (Puzzle.CLUE_SHAPE)(dataNumberClue[face][i, j] % 10);
-                        }
-                    }
-                }
-            }
+            Puzzle puzzle = MakePuzzleFromPuzzleData(data);
 
             return puzzle;
         }
+
         return null;
+    }
+
+    static Puzzle MakePuzzleFromPuzzleData(PuzzleData data)
+    {
+        Puzzle puzzle = new Puzzle();
+
+        puzzle.puzzleName = data.puzzleName;
+        puzzle.answerArray = data.answerArray;
+        puzzle.answerColorIndex = data.answerColorIndex;
+
+        puzzle.zLen = data.zLen;
+        puzzle.yLen = data.yLen;
+        puzzle.xLen = data.xLen;
+        puzzle.breakCount = data.breakCount;
+
+        puzzle.numberClue = new List<Puzzle.NumberClue[,]>();
+        puzzle.numberClue.Add(new Puzzle.NumberClue[puzzle.yLen, puzzle.xLen]); // front-back;
+        puzzle.numberClue.Add(new Puzzle.NumberClue[puzzle.xLen, puzzle.zLen]); // top-bottom;
+        puzzle.numberClue.Add(new Puzzle.NumberClue[puzzle.yLen, puzzle.zLen]); // right-left;
+
+        var dataNumberClue = data.numberClue;
+
+        for (int face = 0; face < 3; ++face)
+        {
+            for (int i = 0; i < dataNumberClue[face].GetLength(0); ++i)
+            {
+                for (int j = 0; j < dataNumberClue[face].GetLength(1); ++j)
+                {
+                    puzzle.numberClue[face][i, j] = new Puzzle.NumberClue();
+
+                    if (dataNumberClue[face][i, j] == -1)
+                    {
+                        puzzle.numberClue[face][i, j].number = -1;
+                    }
+                    else
+                    {
+                        puzzle.numberClue[face][i, j].number = dataNumberClue[face][i, j] / 10;
+                        puzzle.numberClue[face][i, j].shape = (Puzzle.CLUE_SHAPE)(dataNumberClue[face][i, j] % 10);
+                    }
+                }
+            }
+        }
+
+        return puzzle;
     }
 }
 
