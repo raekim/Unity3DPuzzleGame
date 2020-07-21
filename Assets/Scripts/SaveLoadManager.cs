@@ -7,10 +7,11 @@ using UnityEngine;
 
 public static class SaveLoadManager
 {
-    public static void SavePuzzle(Puzzle puzzle)
+
+    public static void SavePuzzle(Puzzle puzzle, string fileName)
     {
         BinaryFormatter bf = new BinaryFormatter();
-        FileStream stream = new FileStream(Application.dataPath + @"\Resources\Testpuzzle.txt", FileMode.Create);
+        FileStream stream = new FileStream(Application.dataPath + @"\Resources\PuzzleData" + fileName, FileMode.Create);
 
         PuzzleData data = new PuzzleData(puzzle);
 
@@ -18,12 +19,12 @@ public static class SaveLoadManager
         stream.Close();
     }
 
-    public static Puzzle LoadPuzzle()
+    public static Puzzle LoadPuzzle(string fileName)
     {
-        if(File.Exists(Application.dataPath + @"\Resources\Testpuzzle.txt"))
+        if(File.Exists(Application.dataPath + @"\Resources\PuzzleData" + fileName))
         {
             BinaryFormatter bf = new BinaryFormatter();
-            FileStream stream = new FileStream(Application.dataPath + @"\Resources\Testpuzzle.txt", FileMode.Open);
+            FileStream stream = new FileStream(Application.dataPath + @"\Resources\PuzzleData" + fileName, FileMode.Open);
 
             PuzzleData data = bf.Deserialize(stream) as PuzzleData;
 

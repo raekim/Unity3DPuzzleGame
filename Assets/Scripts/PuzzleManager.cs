@@ -20,7 +20,7 @@ public class PuzzleManager : MonoBehaviour
         // 퍼즐 정보 불러오기
         puzzle = new Puzzle();
         //puzzle.Init();
-        puzzle = SaveLoadManager.LoadPuzzle();
+        //puzzle = SaveLoadManager.LoadPuzzle();
 
         // 초기 number clue 생성
         //PuzzleSolver solver = new PuzzleSolver();

@@ -7,12 +7,10 @@ public class EditorCommand : MonoBehaviour
     public LayerMask ignoreMask;
     public PuzzleEditor puzzleEditor;
 
-    Puzzle puzzle;
     COMMAND_MODE commandMode;
 
     private void Awake()
     {
-        puzzle = puzzleEditor.GetPuzzle();
         commandMode = COMMAND_MODE.BUILD;
     }
 
@@ -42,13 +40,12 @@ public class EditorCommand : MonoBehaviour
         {
             if (ClickedCube(out clickedCube, out clickedFace))
             {
-                int[] clickedCubeIndex = clickedCube.cubeIndex;
-                int[] newCubeIndex = clickedCubeIndex;
-
-                Debug.Log("CLicked Face : " + clickedFace);
+                // [z,y,x]
+                int[] newCubeIndex = new int[3];
+                for (int i = 0; i < 3; ++i) newCubeIndex[i] = clickedCube.cubeIndex[i];
 
                 // 클릭 된 면에 붙어서 새로운 큐브가 생성
-                switch(clickedFace)
+                switch (clickedFace)
                 {
                     case CLICKED_FACE.FRONT:
                         newCubeIndex[0]--;
@@ -71,19 +68,7 @@ public class EditorCommand : MonoBehaviour
                     
                 }
 
-                // 새로운 큐브가 9x9x9 범위를 벗어나지 않는지 확인
-                if (newCubeIndex[0] < 9 && newCubeIndex[1] < 9 && newCubeIndex[2] < 9)
-                {
-                    float offSetX = 9 * .5f - .5f;
-                    float offSetY = -9 * .5f + .5f;
-                    float offSetZ = 9 * .5f - .5f;
-
-                    Vector3 cubePosition = new Vector3(-newCubeIndex[2], 9 - newCubeIndex[1] - 1, -newCubeIndex[0]);
-                    cubePosition += new Vector3(offSetX, offSetY, offSetZ);
-
-                    var cubeObject = Instantiate(puzzleEditor.CubePrefab, cubePosition, Quaternion.identity, puzzleEditor.puzzleObject.transform);
-                    cubeObject.GetComponent<EditorCube>().cubeIndex = newCubeIndex;
-                }
+                puzzleEditor.AddNewCube(newCubeIndex);
             }
         }
     }
@@ -102,8 +87,7 @@ public class EditorCommand : MonoBehaviour
         if (Physics.Raycast(ray, out hit, float.MaxValue, ~ignoreMask))
         {
             _clickedCube = hit.collider.GetComponentInParent<EditorCube>();
-
-            switch(hit.collider.gameObject.name)
+            switch (hit.collider.gameObject.name)
             {
                 case "front":
                     _clickedFace = CLICKED_FACE.FRONT;
