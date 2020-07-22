@@ -575,6 +575,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 4
   puzzleEditor: {fileID: 759753907}
+  cameraRot: {fileID: 534669906}
 --- !u!4 &759753906
 Transform:
   m_ObjectHideFlags: 0
@@ -1015,7 +1016,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "\uBD88\uB7EC \uC62C \uD30C\uC77C \uC774\uB984..."
+  m_Text: "\uBD88\uB7EC\uC62C \uD30C\uC77C \uC774\uB984..."
 --- !u!222 &1466300189
 CanvasRenderer:
   m_ObjectHideFlags: 0

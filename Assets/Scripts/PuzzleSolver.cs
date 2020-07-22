@@ -117,9 +117,9 @@ public class PuzzleSolver
         MyPuzzle myPuzzle = new MyPuzzle(puzzle);
         
         LineHeap Q = new LineHeap(puzzle.zLen * puzzle.yLen * puzzle.xLen); // line solver가 사용 할 우선순위 큐
-
+        
         // 처음 몇 개의 complete-description 라인을 마크하고 풀고, 상태가 바뀐 cell의 수직 라인들 우선순위 올리고 힙에 넣기
-        SolveCompleteDescriptionLines(true, 0, linesOnFaces, completeLines, myPuzzle, Q);
+        SolveCompleteDescriptionLines(true, 3, linesOnFaces, completeLines, myPuzzle, Q);
 
         // complete-description 라인들만 빼고 모두 힙에 넣는다
         foreach(var face in linesOnFaces)

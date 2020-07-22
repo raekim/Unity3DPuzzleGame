@@ -981,7 +981,7 @@ PrefabInstance:
     - target: {fileID: 8554738097535104992, guid: 9f622c21a92ed0347ae961fd5c28043a,
         type: 3}
       propertyPath: PuzzleFileName
-      value: Star
+      value: Chair
       objectReference: {fileID: 0}
     - target: {fileID: 8554738097535104993, guid: 9f622c21a92ed0347ae961fd5c28043a,
         type: 3}

@@ -4,14 +4,12 @@ using UnityEngine;
 
 public class EditorCommand : MonoBehaviour
 {
-    public LayerMask ignoreMask;
-    public PuzzleEditor puzzleEditor;
-
-    COMMAND_MODE commandMode;
-
-    private void Awake()
+    enum COMMAND_MODE
     {
-        commandMode = COMMAND_MODE.BUILD;
+        DEFAULT,
+        BUILD,
+        DESTROY,
+        COLOR
     }
 
     enum CLICKED_FACE
@@ -24,53 +22,103 @@ public class EditorCommand : MonoBehaviour
         BOTTOM
     }
 
-    enum COMMAND_MODE
+    public LayerMask ignoreMask;
+    public PuzzleEditor puzzleEditor;
+    public camRot cameraRot;
+
+    COMMAND_MODE commandMode;
+
+    KeyCode buildKey = KeyCode.Alpha1;
+    KeyCode destroyKey = KeyCode.Alpha2;
+    KeyCode colorKey = KeyCode.Alpha3;
+
+    private void Awake()
     {
-        DEFAULT,
-        BUILD,
-        DESTROY
-    };
+        commandMode = COMMAND_MODE.DEFAULT;
+        Debug.Log("1:BUILD, 2:DESTROY, 3:COLOR");
+    }
 
     private void Update()
     {
         EditorCube clickedCube;
         CLICKED_FACE clickedFace;
 
-        if (Input.GetKeyDown(KeyCode.Mouse0))
+        ChangeCommandMode();
+
+        switch (commandMode)
         {
-            if (ClickedCube(out clickedCube, out clickedFace))
-            {
-                // [z,y,x]
-                int[] newCubeIndex = new int[3];
-                for (int i = 0; i < 3; ++i) newCubeIndex[i] = clickedCube.cubeIndex[i];
-
-                // 클릭 된 면에 붙어서 새로운 큐브가 생성
-                switch (clickedFace)
+            case COMMAND_MODE.DEFAULT:
+                break;
+            case COMMAND_MODE.BUILD:
+                if (Input.GetKeyDown(KeyCode.Mouse0))
                 {
-                    case CLICKED_FACE.FRONT:
-                        newCubeIndex[0]--;
-                        break;
-                    case CLICKED_FACE.BACK:
-                        newCubeIndex[0]++;
-                        break;
-                    case CLICKED_FACE.BOTTOM:
-                        newCubeIndex[1]++;
-                        break;
-                    case CLICKED_FACE.TOP:
-                        newCubeIndex[1]--;
-                        break;
-                    case CLICKED_FACE.LEFT:
-                        newCubeIndex[2]++;
-                        break;
-                    case CLICKED_FACE.RIGHT:
-                        newCubeIndex[2]--;
-                        break;
-                    
-                }
+                    if (ClickedCube(out clickedCube, out clickedFace))
+                    {
+                        // [z,y,x]
+                        int[] newCubeIndex = new int[3];
+                        for (int i = 0; i < 3; ++i) newCubeIndex[i] = clickedCube.cubeIndex[i];
 
-                puzzleEditor.AddNewCube(newCubeIndex);
-            }
+                        // 클릭 된 면에 붙어서 새로운 큐브가 생성
+                        switch (clickedFace)
+                        {
+                            case CLICKED_FACE.FRONT:
+                                newCubeIndex[0]--;
+                                break;
+                            case CLICKED_FACE.BACK:
+                                newCubeIndex[0]++;
+                                break;
+                            case CLICKED_FACE.BOTTOM:
+                                newCubeIndex[1]++;
+                                break;
+                            case CLICKED_FACE.TOP:
+                                newCubeIndex[1]--;
+                                break;
+                            case CLICKED_FACE.LEFT:
+                                newCubeIndex[2]++;
+                                break;
+                            case CLICKED_FACE.RIGHT:
+                                newCubeIndex[2]--;
+                                break;
+
+                        }
+
+                        puzzleEditor.AddNewCube(newCubeIndex);
+                    }
+                }
+                break;
+            case COMMAND_MODE.DESTROY:
+                if (Input.GetKeyDown(KeyCode.Mouse0))
+                {
+                    if (ClickedCube(out clickedCube, out clickedFace))
+                    {
+                        puzzleEditor.DestoryCube(clickedCube.cubeIndex);
+                    }
+                }
+                break;
         }
+    }
+
+    void ChangeCommandMode()
+    {
+        if (!Input.anyKey)
+        {
+            SetCommandMode(COMMAND_MODE.DEFAULT);
+        }
+        else if (Input.GetKeyDown(destroyKey))
+        {
+            SetCommandMode(COMMAND_MODE.DESTROY);
+        }
+        else if (Input.GetKeyDown(buildKey))
+            {
+                SetCommandMode(COMMAND_MODE.BUILD);
+            }
+    }
+
+    void SetCommandMode(COMMAND_MODE mode)
+    {
+        commandMode = mode;
+
+        cameraRot.camRotAllowed = (mode == COMMAND_MODE.DEFAULT);
     }
 
     // 큐브 조각을 클릭했나?

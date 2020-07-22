@@ -28,6 +28,8 @@ public class PuzzleEditorSaveLoadManager : MonoBehaviour
         solver.ProcessPuzzle(puzzleToSave);
 
         SaveLoadManager.SavePuzzle(puzzleToSave, saveFileNameText.text);
+
+        Debug.Log("Puzzle Save 완료.");
     }
 
     public void LoadPuzzleFile()
