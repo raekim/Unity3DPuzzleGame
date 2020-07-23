@@ -264,10 +264,6 @@ public class PuzzleEditor : MonoBehaviour
         // 마지막 남은 큐브는 부수지 않는다
         if ((puzzle.zLen * puzzle.yLen * puzzle.xLen) - puzzle.breakCount == 1) return;
 
-        //Debug.Log("index[0]" + index[0]);
-        //Debug.Log("index[1]" + index[1]);
-        //Debug.Log("index[2]" + index[2]);
-
         puzzle.answerArray[index[0], index[1], index[2]] = 0;
 
         // front 또는 back 면의 마지막 큐브를 부순 경우

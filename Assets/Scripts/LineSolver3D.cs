@@ -171,7 +171,7 @@ public class LineSolver3D
             //for (startIdx = currIdx; startIdx + clue[i] - 1 < lineLen; ++startIdx)
             bool placedBlock = false;
 
-            for (startIdx = currIdx; startIdx < lineLen; ++startIdx)
+            for (startIdx = currIdx; startIdx + clue[i] - 1 < lineLen ; ++startIdx)
             {
                 bool canPlaceBlock = true;
     

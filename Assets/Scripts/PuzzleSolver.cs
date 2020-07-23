@@ -138,8 +138,12 @@ public class PuzzleSolver
             if (lineToSolve == null)
             {
                 // 풀다가 안 풀리면 complete-description 라인 하나씩 추가 해 주면서 진행
-                if (SolveCompleteDescriptionLines(true, 1, linesOnFaces, completeLines, myPuzzle, Q)) continue;
-                else return false;  // 퍼즐 풀이 실패!
+                if (SolveCompleteDescriptionLines(false, 1, linesOnFaces, completeLines, myPuzzle, Q)) continue;
+                else
+                {
+                    Debug.Log("퍼즐 풀이 실패!");
+                    return false;  // 퍼즐 풀이 실패!
+                }
             }
 
             if (isLinePassivelySolved(lineToSolve, myPuzzle))
@@ -227,10 +231,8 @@ public class PuzzleSolver
     bool isLinePassivelySolved(Line line, MyPuzzle myPuzzle)
     {
         int solids = 0;
-        int groups = 0;
         int lineCount = line.line.Count;
         var l = line.line;
-        CELLSTATE beforeCell = CELLSTATE.EMPTY;
     
         for (int i = 0; i < lineCount; ++i)
         {
@@ -239,17 +241,11 @@ public class PuzzleSolver
             // 모든 solid를 칠하지 않았어도 empty만 맞으면 풀었다고 본다
             if (currentCell == CELLSTATE.SOLID || currentCell == CELLSTATE.BLANK)
             {
-                if(beforeCell == CELLSTATE.EMPTY)
-                {
-                    groups++;
-                }
                 solids++;
             }
-    
-            beforeCell = currentCell;
         }
     
-        return solids == line.clue.number;  // SOLID가 아닌 큐브는 모두 EMPTY일 것이므로 group은 상관 없이 전체 SOLID 갯수만 보면 된다
+        return solids == line.clue.number;  // SOLID 또는 BLANK가 아닌 큐브는 모두 EMPTY일 것이므로 group은 상관 없이 전체 SOLID 갯수만 보면 된다
     }
 
     bool isLineSolved(Line line, MyPuzzle myPuzzle)
@@ -279,15 +275,16 @@ public class PuzzleSolver
     {
         Line lineToSolve = null;
 
+        // completeLines 리스트의 맨 앞에서부터 라인을 뽑아 solved인지 검사
+        // 맨 앞에서부터 뽑는 이유는 number clue의 숫자가 0이 아닌 라인들을 리스트 앞쪽에 몰아서 저장 해 놓았기 때문
         while (completeLines.Count > 0)
         {
-            int idx = Random.Range(0, completeLines.Count);
-            lineToSolve = completeLines[idx];
+            lineToSolve = completeLines[0];
 
             if (isLineSolved(lineToSolve, myPuzzle))
             {
                 lineToSolve.solved = true;
-                completeLines.RemoveAt(idx);
+                completeLines.RemoveAt(0);
 
                 lineToSolve = null;
             }
@@ -343,7 +340,7 @@ public class PuzzleSolver
 
     bool SolveCompleteDescriptionLines(bool firstCall, int num, List<Line[,]> linesOnFaces, List<Line> completeLines, MyPuzzle myPuzzle, LineHeap Q)
     {
-        // 랜덤한 num개의 complete-description 라인을 푼다
+        // num개의 complete-description 라인을 푼다
         for (int i = 0; i < Mathf.Min(num, completeLines.Count); ++i)
         {
             // solved 아닌 라인을 찾는다
@@ -445,7 +442,11 @@ public class PuzzleSolver
                     // complete-description 라인들은 따로 관리
                     if (newLine.isCompleteDescription)
                     {
-                        completeLines.Add(newLine);
+                        // 숫자가 0이 아닌 라인은 리스트 맨 앞에 삽입
+                        if(newLine.clue.number > 0)
+                            completeLines.Insert(0, newLine);
+                        else
+                            completeLines.Add(newLine);
                     }
 
                     res[face][i, j] = newLine;
