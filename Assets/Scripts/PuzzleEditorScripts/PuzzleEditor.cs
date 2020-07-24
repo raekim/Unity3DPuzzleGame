@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class PuzzleEditor : MonoBehaviour
 {
@@ -14,6 +15,11 @@ public class PuzzleEditor : MonoBehaviour
     float offSetZ;
 
     Puzzle puzzle;
+
+    public void ToPlayScene()
+    {
+        SceneManager.LoadScene(0);
+    }
 
     public Puzzle GetPuzzle()
     {

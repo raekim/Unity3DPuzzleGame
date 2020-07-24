@@ -39,21 +39,17 @@ public class Slicer : MonoBehaviour
         // 캡슐 오브젝트의 click, drag 이벤트를 들을 수 있게 설정
         GetComponentInChildren<SlicerCapsule>().capsuleClickDelegate += SlicerClick;
         GetComponentInChildren<SlicerCapsule>().capsuleDragDelegate += SlicerDrag;
+        SetSlicerToStartPosition();
+    }
 
+    public void InitSlicerInfo()
+    {
         // 퍼즐에 대한 정보 얻어오기
         puzzleCubes = puzzleManager.GetPuzzleCubes();
         puzzleSize = puzzleManager.GetPuzzleSize();
 
-        // startLocation 과 이동 range 계산
-        InitSlicerInfo();
-
-        SetSlicerToStartPosition();
-    }
-
-    void InitSlicerInfo()
-    {
         // 슬라이서의 종류(Red 또는 Blue)와 포지션에 따라 시작 위치와 이동 range를 정한다
-        if(slicerType == SLICER_TYPE.RED)
+        if (slicerType == SLICER_TYPE.RED)
         {
             maxStep = puzzleSize[2] - 1;
 

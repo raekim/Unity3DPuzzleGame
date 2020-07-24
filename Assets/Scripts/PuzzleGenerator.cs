@@ -11,6 +11,12 @@ public class PuzzleGenerator : MonoBehaviour
 
     public void GeneratePuzzle(Puzzle puzzle)
     {
+        // 모든 큐브 오브젝트들 삭제
+        foreach (Transform child in puzzleObject.transform)
+        {
+            Destroy(child.gameObject);
+        }
+
         puzzle.cubes = new Cube[puzzle.zLen, puzzle.yLen, puzzle.xLen];
 
         // 답안을 감싸는 큐브들 생성

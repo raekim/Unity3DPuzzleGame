@@ -1,6 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class PuzzleManager : MonoBehaviour
 {
@@ -8,20 +10,35 @@ public class PuzzleManager : MonoBehaviour
     public camRot cameraRot;
     public GameObject buttonsPanel;
     public string PuzzleFileName;   // 플레이 할 퍼즐 이름
+    public Text puzzleFileName;
+    public Text currentOpenPuzzleName;
+    public Text completeText;
+
+    public Slicer[] slicers;
 
     Puzzle puzzle;  // 플레이 할 퍼즐 정보
     Material puzzleBg;
 
     int currentBreaks = 0;
 
-    private void Awake()
+    public void GoToEditorScene()
     {
-        puzzleBg = Resources.Load<Material>("Materials/bg");
+        SceneManager.LoadScene(1);
+    }
+
+    public void LoadAndGeneratePuzzle(string puzzleFileName)
+    {
+        commandManager.commandFreeze = false;    // 큐브 색칠이나 보호 금지
+        cameraRot.camRotAllowed = true;        // 퍼즐 회전 금지
+
+        completeText.gameObject.SetActive(false);
 
         // 퍼즐 정보 불러오기
-        puzzle = SaveLoadManager.LoadPuzzle(PuzzleFileName);
+        puzzle = SaveLoadManager.LoadPuzzle(puzzleFileName);
 
-        if(puzzle == null)
+        currentOpenPuzzleName.text = "퍼즐 이름 : " + puzzleFileName;
+
+        if (puzzle == null)
         {
             Debug.Log("Error : 퍼즐 불러오기 실패!");
             Application.Quit();
@@ -42,11 +59,53 @@ public class PuzzleManager : MonoBehaviour
                 }
             }
         }
+
+        slicers[0].InitSlicerInfo();
+        slicers[1].InitSlicerInfo();
     }
 
-    private void Start()
+    public void LoadAndGeneratePuzzle()
     {
-        
+        commandManager.commandFreeze = false;    // 큐브 색칠이나 보호 금지
+        cameraRot.camRotAllowed = true;        // 퍼즐 회전 금지
+
+        completeText.gameObject.SetActive(false);
+
+        // 퍼즐 정보 불러오기
+        puzzle = SaveLoadManager.LoadPuzzle(puzzleFileName.text);
+
+        currentOpenPuzzleName.text = "퍼즐 이름 : " + puzzleFileName.text;
+
+        if (puzzle == null)
+        {
+            Debug.Log("Error : 퍼즐 불러오기 실패!");
+            Application.Quit();
+        }
+
+        // Cube들로 이루어진 퍼즐 생성
+        PuzzleGenerator puzzleGenerator = GetComponent<PuzzleGenerator>();
+        puzzleGenerator.GeneratePuzzle(puzzle);
+
+        // 퍼즐의 큐브들 중 정답 큐브 mark
+        for (int z = 0; z < puzzle.zLen; ++z)
+        {
+            for (int y = 0; y < puzzle.yLen; ++y)
+            {
+                for (int x = 0; x < puzzle.xLen; ++x)
+                {
+                    if (puzzle.answerArray[z, y, x] == 1) puzzle.cubes[z, y, x].isAnswerCube = true;
+                }
+            }
+        }
+
+        slicers[0].InitSlicerInfo();
+        slicers[1].InitSlicerInfo();
+    }
+
+    private void Awake()
+    {
+        LoadAndGeneratePuzzle("Sofa");
+        puzzleBg = Resources.Load<Material>("Materials/bg");
     }
 
     public Cube[,,] GetPuzzleCubes()
@@ -73,15 +132,16 @@ public class PuzzleManager : MonoBehaviour
         if (currentBreaks == puzzle.breakCount)
         {
             ProcessPuzzleComplete();
+            completeText.gameObject.SetActive(true);
         }
     }
 
     public void ProcessPuzzleComplete()
     {
         commandManager.commandFreeze = true;    // 큐브 색칠이나 보호 금지
-        cameraRot.camRotAllowed = false;        // 퍼즐 회전 금지
+        cameraRot.camRotAllowed = true;        // 퍼즐 회전 금지
 
-        StartCoroutine(DetailedPuzzleCompleteEffect());
+        //  StartCoroutine(DetailedPuzzleCompleteEffect());
     }
 
     void HideNumberCluesOnCubes()
@@ -159,10 +219,5 @@ public class PuzzleManager : MonoBehaviour
 
 
         // -----> 구현중
-    }
-
-    private void OnApplicationQuit()
-    {
-        puzzleBg.color = Color.white;
     }
 }
