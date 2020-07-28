@@ -24,7 +24,7 @@ public class EditorCommand : MonoBehaviour
 
     public LayerMask ignoreMask;
     public PuzzleEditor puzzleEditor;
-    public camRot cameraRot;
+    public CameraRotationManager cameraRot;
 
     COMMAND_MODE commandMode;
 

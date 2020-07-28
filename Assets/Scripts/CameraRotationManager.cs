@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class camRot : MonoBehaviour
+public class CameraRotationManager : MonoBehaviour
 {
     public Transform puzzleObj;
     public float speed = 1f;

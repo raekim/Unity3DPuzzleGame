@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-// x축 방향으로만 드래그 되는 슬라이서
 public class Slicer : MonoBehaviour
 {
     public enum SLICER_TYPE
@@ -21,8 +20,7 @@ public class Slicer : MonoBehaviour
     public SLICER_TYPE slicerType;
     public SLICER_POSITION slicerPosition;
 
-    public PuzzleManager puzzleManager;
-
+    int dir;    // 슬라이서의 진행 방향에 따라 -1 또는 1 
     int sliceStep;
     int maxStep;
     Vector3 startLocation;        // sliceStep이 0일 때의 slicer 위치
@@ -42,36 +40,47 @@ public class Slicer : MonoBehaviour
         SetSlicerToStartPosition();
     }
 
-    public void InitSlicerInfo()
+    public void InitSlicer(Puzzle puzzle)
+    {
+        InitSlicerInfo(puzzle);
+        SetSlicerToStartPosition();
+    }
+
+    void InitSlicerInfo(Puzzle puzzle)
     {
         // 퍼즐에 대한 정보 얻어오기
-        puzzleCubes = puzzleManager.GetPuzzleCubes();
-        puzzleSize = puzzleManager.GetPuzzleSize();
+        puzzleCubes = puzzle.cubes;
+        puzzleSize = new int[3] { puzzle.zLen, puzzle.yLen, puzzle.xLen };
 
         // 슬라이서의 종류(Red 또는 Blue)와 포지션에 따라 시작 위치와 이동 range를 정한다
         if (slicerType == SLICER_TYPE.RED)
         {
             maxStep = puzzleSize[2] - 1;
+            startLocation = puzzleCubes[0, 0, 0].transform.position;
 
             switch (slicerPosition)
             {
                 case SLICER_POSITION.FRONT_LEFT:
+                    dir = -1;
+                    startLocation += cubeWidth * (new Vector3(.5f, -puzzleSize[1] * .5f + .5f, 1f));
                     break;
                 case SLICER_POSITION.FRONT_RIGHT:
+                    dir = 1;
+                    startLocation += cubeWidth * (new Vector3(-puzzleSize[2] + .5f, -puzzleSize[1] * .5f + .5f, 1f));
                     break;
                 case SLICER_POSITION.BACK_LEFT:
-                    startLocation = puzzleCubes[0, 0, 0].transform.position;
+                    dir = -1;
                     startLocation += cubeWidth * (new Vector3(.5f, -puzzleSize[1] * .5f + .5f, -puzzleSize[0]));
-
-                    minClampValue = startLocation.x - maxStep * cubeWidth;
-                    maxClampValue = startLocation.x;
                     break;
                 case SLICER_POSITION.BACK_RIGHT:
+                    dir = 1;
+                    startLocation += cubeWidth * (new Vector3(-puzzleSize[2] + .5f, -puzzleSize[1] * .5f + .5f, -puzzleSize[0]));
                     break;
             }
 
-            // 각 step 사이의 거리 계산
-            stepDistance = Mathf.Abs(startLocation.x - (startLocation.x - maxStep * cubeWidth)) / maxStep;
+            // 슬라이서 드래그 좌표의 min, max 설정
+            minClampValue = Mathf.Min(startLocation.x, startLocation.x + dir * maxStep * cubeWidth);
+            maxClampValue = Mathf.Max(startLocation.x, startLocation.x + dir * maxStep * cubeWidth);
         }
         else if(slicerType == SLICER_TYPE.BLUE)
         {
@@ -97,10 +106,10 @@ public class Slicer : MonoBehaviour
                 case SLICER_POSITION.BACK_RIGHT:
                     break;
             }
+        }
 
-            // 각 step 사이의 거리 계산
-            stepDistance = Mathf.Abs(startLocation.z - (startLocation.z + maxStep * cubeWidth)) / maxStep;
-        } 
+        // 각 step 사이의 거리 계산
+        stepDistance = Mathf.Abs(minClampValue - maxClampValue) / maxStep;
     }
 
     void SetSlicerToStartPosition()
@@ -155,13 +164,13 @@ public class Slicer : MonoBehaviour
             int newSliceStep = Mathf.FloorToInt(Mathf.Abs(slicerPosition.x - startLocation.x) / stepDistance);
 
             // snap
-            slicerPosition.x = startLocation.x - newSliceStep * cubeWidth;
+            slicerPosition.x = startLocation.x + dir * newSliceStep * cubeWidth;
 
             // 단면을 숨기거나 보이거나 한다
             ShowAndHideCubes(sliceStep, newSliceStep);
             sliceStep = newSliceStep;
         }
-        else
+        else if(slicerType == SLICER_TYPE.BLUE)
         {
             // clamp
             slicerPosition.z = Mathf.Clamp(slicerPosition.z, minClampValue, maxClampValue);

@@ -6,8 +6,7 @@ public class SlicerCapsule : MonoBehaviour
 {
     public Color inactiveColor;
     public Color activeColor;
-    public camRot cameraRot;
-    public CommandManager commandManager;
+    public CameraRotationManager cameraRot;
 
     public delegate void OnMouseDownDelegate();
     public event OnMouseDownDelegate capsuleClickDelegate;

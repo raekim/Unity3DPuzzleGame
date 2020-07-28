@@ -6,7 +6,7 @@ public class CommandManager : MonoBehaviour
 {
     public PuzzleManager puzzleManager;
     public LayerMask ignoreMask;
-    public camRot cameraRot;
+    public CameraRotationManager cameraRot;
     public bool commandFreeze = false;
 
     KeyCode destroyKey = KeyCode.Alpha1;
