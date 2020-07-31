@@ -156,7 +156,7 @@ public class PuzzleManager : MonoBehaviour
 
         // 배경이 점점 어두워짐과 동시에 퍼즐이 빙글빙글 돌아 보기 좋은 각도로 된다
         StartCoroutine(TintBackgroundImage(new Color(.3f, .3f, .3f)));
-        yield return StartCoroutine(cameraRot.RotateAroundCompletePuzzle(3f));
+        //yield return StartCoroutine(cameraRot.RotateAroundCompletePuzzle(3f));
 
         // 완성 된 모습의 퍼즐 공개
         StartCoroutine(TintBackgroundImage(new Color(1f, 1f, 1f)));

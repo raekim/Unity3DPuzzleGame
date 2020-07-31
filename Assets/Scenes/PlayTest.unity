@@ -2085,11 +2085,21 @@ PrefabInstance:
       propertyPath: m_Materials.Array.data[0]
       value: 
       objectReference: {fileID: 2100000, guid: 4bd32d2983656244fb265cd220474e13, type: 2}
+    - target: {fileID: 2927248829767247660, guid: 7fa56092729d84348be76a9d91aa8da4,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2927248830117914344, guid: 7fa56092729d84348be76a9d91aa8da4,
         type: 3}
       propertyPath: puzzleObj
       value: 
       objectReference: {fileID: 671383859}
+    - target: {fileID: 2927248830117914344, guid: 7fa56092729d84348be76a9d91aa8da4,
+        type: 3}
+      propertyPath: slicers
+      value: 
+      objectReference: {fileID: 776437862}
     - target: {fileID: 2927248830117914347, guid: 7fa56092729d84348be76a9d91aa8da4,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -2150,7 +2160,8 @@ PrefabInstance:
       propertyPath: m_Name
       value: Main Camera
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 2927248829767247661, guid: 7fa56092729d84348be76a9d91aa8da4, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 7fa56092729d84348be76a9d91aa8da4, type: 3}
 --- !u!1001 &6078146823162574678
 PrefabInstance:

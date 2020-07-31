@@ -14,13 +14,14 @@ public class Slicer : MonoBehaviour
         FRONT_LEFT,
         FRONT_RIGHT,
         BACK_LEFT,
-        BACK_RIGHT
+        BACK_RIGHT,
+        MAX
     }
 
     public SLICER_TYPE slicerType;
     public SLICER_POSITION slicerPosition;
 
-    int dir;    // 슬라이서의 진행 방향에 따라 -1 또는 1 
+    int dir;    // 슬라이서의 world position 진행 방향에 따라 -1 또는 1 
     int sliceStep;
     int maxStep;
     Vector3 startLocation;        // sliceStep이 0일 때의 slicer 위치
@@ -224,7 +225,7 @@ public class Slicer : MonoBehaviour
                     {
                         if (puzzleCubes[z, y, beforeCubeX].gameObject.activeSelf)
                         {
-                            for (int i = beforeCubeX; i != afterCubeX; i += -dir) puzzleCubes[z, y, i].gameObject.SetActive(false);
+                            for (int i = beforeCubeX; i != afterCubeX; i -= dir) puzzleCubes[z, y, i].gameObject.SetActive(false);
                         }
                     }
                 }
@@ -238,7 +239,7 @@ public class Slicer : MonoBehaviour
                     {
                         if (puzzleCubes[z, y, beforeCubeX].gameObject.activeSelf)
                         {
-                            for (int i = beforeCubeX; i != afterCubeX - -dir; i -= -dir) puzzleCubes[z, y, i].gameObject.SetActive(true);
+                            for (int i = beforeCubeX; i != afterCubeX + dir; i += dir) puzzleCubes[z, y, i].gameObject.SetActive(true);
                         }
                     }
                 }
@@ -246,46 +247,50 @@ public class Slicer : MonoBehaviour
         }
         else if(slicerType == SLICER_TYPE.BLUE)
         {
+            int beforeCubeZ = 0;
+            int afterCubeZ = 0;
+
             switch (slicerPosition)
             {
                 case SLICER_POSITION.BACK_LEFT:
+                case SLICER_POSITION.BACK_RIGHT:
+                    beforeCubeZ = puzzleSize[0] - 1 - beforeStep;
+                    afterCubeZ = puzzleSize[0] - 1 - afterStep;
+                    break;
+                case SLICER_POSITION.FRONT_LEFT:
                 case SLICER_POSITION.FRONT_RIGHT:
+                    beforeCubeZ = beforeStep; 
+                    afterCubeZ = afterStep; 
+                    break;
+            }
+
+            // 숨기기
+            if (beforeStep < afterStep)
+            {
+                for (int x = 0; x < puzzleSize[2]; ++x)
+                {
+                    for (int y = 0; y < puzzleSize[1]; ++y)
                     {
-                        // 숨기기
-                        if (beforeStep < afterStep)
+                        if (puzzleCubes[beforeCubeZ, y, x].gameObject.activeSelf)
                         {
-                            for (int i = puzzleSize[0] - afterStep; i < puzzleSize[0] - beforeStep; ++i)
-                            {
-                                for (int x = 0; x < puzzleSize[2]; ++x)
-                                {
-                                    for (int y = 0; y < puzzleSize[1]; ++y)
-                                    {
-                                        puzzleCubes[i, y, x].gameObject.SetActive(false);
-                                    }
-                                }
-                            }
-                        }
-                        else if (beforeStep > afterStep)
-                        {
-                            // 보이기
-                            for (int i = puzzleSize[0] - beforeStep; i < puzzleSize[0] - afterStep; ++i)
-                            {
-                                for (int x = 0; x < puzzleSize[2]; ++x)
-                                {
-                                    for (int y = 0; y < puzzleSize[1]; ++y)
-                                    {
-                                        if (!puzzleCubes[i, y, x].isDestroyed)
-                                            puzzleCubes[i, y, x].gameObject.SetActive(true);
-                                    }
-                                }
-                            }
+                            for (int i = beforeCubeZ; i != afterCubeZ; i -= dir) puzzleCubes[i, y, x].gameObject.SetActive(false);
                         }
                     }
-                    break;
-                case SLICER_POSITION.BACK_RIGHT:
-                case SLICER_POSITION.FRONT_LEFT:
-                
-                    break;
+                }
+            }
+            else if (beforeStep > afterStep)
+            {
+                // 보이기
+                for (int x = 0; x < puzzleSize[2]; ++x)
+                {
+                    for (int y = 0; y < puzzleSize[1]; ++y)
+                    {
+                        if (puzzleCubes[beforeCubeZ, y, x].gameObject.activeSelf)
+                        {
+                            for (int i = beforeCubeZ; i != afterCubeZ + dir; i += dir) puzzleCubes[i, y, x].gameObject.SetActive(true);
+                        }
+                    }
+                }
             }
         }
     }

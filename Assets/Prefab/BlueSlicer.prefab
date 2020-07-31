@@ -29,7 +29,7 @@ Transform:
   m_GameObject: {fileID: 5733408643461730506}
   m_LocalRotation: {x: 0.7071068, y: -0, z: -0, w: 0.7071068}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.45642388, y: 0.43049526, z: 0.48498368}
+  m_LocalScale: {x: 0.45642388, y: 0.4564239, z: 0.48498368}
   m_Children: []
   m_Father: {fileID: 5733408643319427620}
   m_RootOrder: 0
@@ -108,7 +108,6 @@ MonoBehaviour:
   inactiveColor: {r: 0.12549019, g: 0.22788455, b: 0.5647059, a: 0}
   activeColor: {r: 0.2117647, g: 0.3675073, b: 1, a: 0}
   cameraRot: {fileID: 0}
-  commandManager: {fileID: 0}
 --- !u!1 &5733408643566105253
 GameObject:
   m_ObjectHideFlags: 0
@@ -153,4 +152,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2f3e0956a472bd94e9d31f8136924543, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  puzzleManager: {fileID: 0}
+  slicerType: 0
+  slicerPosition: 0
