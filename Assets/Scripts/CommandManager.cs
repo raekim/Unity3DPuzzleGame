@@ -114,8 +114,8 @@ public class CommandManager : MonoBehaviour
 
                 cubeCommand destroyCommand = new cubeDestoryCommand(clickedCube.GetComponent<Cube>(), clickedPosition);
 
-                lastCubeCommands.Add(destroyCommand);
-                lastCommandIdx++;
+                //lastCubeCommands.Add(destroyCommand);
+                //lastCommandIdx++;
 
                 destroyCommand.Execute();
 
@@ -139,8 +139,8 @@ public class CommandManager : MonoBehaviour
                 // 드래그 해서 연속 색칠
                 protectCommand = new cubeProtectCommand(clickedCube.GetComponent<Cube>(), Color.cyan, tryToProtect);
 
-                lastCubeCommands.Add(protectCommand);
-                lastCommandIdx++;
+                //lastCubeCommands.Add(protectCommand);
+                //lastCommandIdx++;
 
                 protectCommand.Execute();
             }

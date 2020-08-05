@@ -22,6 +22,11 @@ public class SlicerCapsule : MonoBehaviour
         inactiveColor.a = activeColor.a = 1f;
     }
 
+    private void OnEnable()
+    {
+        myMaterial.color = inactiveColor;
+    }
+
     private void OnMouseDown()
     {
         cameraRot.camRotAllowed = false;

@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class CameraRotationManager : MonoBehaviour
 {
+    // 퍼즐의 어떤 부분을 바라보고 있느냐에 따라 나뉘는 카메라 위치
     public enum CAMERA_LOCATION
     {
         FRONT_LEFT,
@@ -29,7 +30,7 @@ public class CameraRotationManager : MonoBehaviour
 
     private void Start()
     {
-        slicers.UpdateBlueSlicersVisibility(cameraLocation);
+        if(slicers) slicers.UpdateBlueSlicersVisibility(cameraLocation);
     }
 
     // Update is called once per frame
@@ -91,90 +92,9 @@ public class CameraRotationManager : MonoBehaviour
         if(cameraLocation != newCameraLocation)
         {
             cameraLocation = newCameraLocation;
-            slicers.UpdateBlueSlicersVisibility(cameraLocation);
+            if(slicers) slicers.UpdateBlueSlicersVisibility(cameraLocation);
         }
 
         Debug.Log(cameraLocation);
     }
-
-    //public IEnumerator RotateAroundCompletePuzzle(float time)
-    //{
-    //    float t = 0f;
-    //    float yRotTime = 2.5f;
-    //    float yAmountDelta = yAmount / yRotTime;
-    //    float yAmountCnt = 0f;
-    //
-    //    float xRotSpeed = speed * 2f;
-    //    float yRotSpeed = 1f;
-    //
-    //    float xSpeedMult = 0f;
-    //
-    //    // time 동안 빙글빙글 돌면서 세로 회전 맞추기
-    //    while (t < time)
-    //    {
-    //        // 세로 회전 맞춤
-    //        if(yAmountCnt <= yRotTime)
-    //        {
-    //            transform.RotateAround(puzzleObj.position, -transform.right, -yAmountDelta * yRotSpeed * Time.deltaTime);
-    //        }
-    //
-    //        // 가로 회전 빙글빙글~~~
-    //        transform.RotateAround(puzzleObj.position, transform.up, -1f * xRotSpeed * xSpeedMult * Time.deltaTime);
-    //
-    //        transform.LookAt(puzzleObj);
-    //
-    //        yAmountCnt += Time.deltaTime;
-    //        t += Time.deltaTime;
-    //
-    //        xSpeedMult += Time.deltaTime / 2f;
-    //        xSpeedMult = Mathf.Min(xSpeedMult, 1f);
-    //
-    //        yield return null;
-    //    }
-    //
-    //    // 세로 회전 맞추기 끝
-    //    yAmount = 0f;
-    //
-    //    // 2바퀴 마저 돌면서 속도 점점 낮추기
-    //    int rotationLaps = -1;
-    //    bool insideDefaultRange = false;
-    //    bool insideSlowDownRange = false;
-    //    bool startSlowingDown = false;
-    //    float slowDownRange = 35f;
-    //
-    //    while(rotationLaps < 2)
-    //    {
-    //        // 가로 회전 빙글빙글~~~
-    //        transform.RotateAround(puzzleObj.position, transform.up, -1f * xRotSpeed * xSpeedMult * Time.deltaTime);
-    //        transform.LookAt(puzzleObj);
-    //
-    //        if(startSlowingDown)
-    //        {
-    //            xRotSpeed -= xRotSpeed * (Time.deltaTime / 2f);
-    //            xRotSpeed = Mathf.Max(xRotSpeed, 3f);
-    //        }
-    //
-    //        if (!insideSlowDownRange && Vector3.Distance(camDefaultTrans, transform.position) < slowDownRange)
-    //        {
-    //            insideSlowDownRange = true;
-    //        }
-    //        else if (insideSlowDownRange && Vector3.Distance(camDefaultTrans, transform.position) > slowDownRange)
-    //        {
-    //            insideSlowDownRange = false;
-    //            if (rotationLaps == 1) startSlowingDown = true;
-    //        }
-    //
-    //        if (!insideDefaultRange && Vector3.Distance(camDefaultTrans, transform.position) < 5f)
-    //        {
-    //            insideDefaultRange = true;
-    //            rotationLaps++;
-    //        }
-    //        else if (insideDefaultRange && Vector3.Distance(camDefaultTrans, transform.position) > 5f)
-    //        {
-    //            insideDefaultRange = false;
-    //        }
-    //
-    //        yield return null;
-    //    }
-    //}
 }

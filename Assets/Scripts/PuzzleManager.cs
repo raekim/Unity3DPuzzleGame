@@ -5,6 +5,7 @@ using UnityEngine.UI;
 
 public class PuzzleManager : MonoBehaviour
 {
+    public GameObject EdgeCube;
     public CommandManager commandManager;
     public CameraRotationManager cameraRot;
     public Text puzzleFileName; // 퍼즐 파일 열기에 쓰이는 이름
@@ -22,6 +23,13 @@ public class PuzzleManager : MonoBehaviour
     {
         LoadAndGeneratePuzzle("Sofa");
         puzzleBg = Resources.Load<Material>("Materials/bg");
+
+        EdgeCube.SetActive(false);
+    }
+
+    public void SetEdgeCubeVisibility(bool value)
+    {
+        EdgeCube.SetActive(value);
     }
 
     public void SetSlicers(Slicer[] _slicers)
@@ -38,8 +46,8 @@ public class PuzzleManager : MonoBehaviour
     {
         currentBreaks = 0;
 
-        commandManager.commandFreeze = false;    // 큐브 색칠이나 보호 금지
-        cameraRot.camRotAllowed = true;        // 퍼즐 회전 금지
+        commandManager.commandFreeze = false;
+        cameraRot.camRotAllowed = true;
 
         completeTextDisplay.gameObject.SetActive(false);
 
@@ -65,6 +73,7 @@ public class PuzzleManager : MonoBehaviour
             {
                 for (int x = 0; x < puzzle.xLen; ++x)
                 {
+                    puzzle.cubes[z, y, x].isAnswerCube = false;
                     if (puzzle.answerArray[z, y, x] == 1) puzzle.cubes[z, y, x].isAnswerCube = true;
                 }
             }
@@ -74,11 +83,15 @@ public class PuzzleManager : MonoBehaviour
         {
             slicers[i].InitSlicer(puzzle);
         }
+
+        // Edge Cube 사이즈를 새로운 퍼즐에 맞게 조절
+        EdgeCube.transform.localScale = new Vector3(puzzle.xLen + 0.05f, puzzle.yLen + 0.05f, puzzle.zLen + 0.05f);
     }
 
     public void RegisterCubeDestroy()
     {
         currentBreaks++;
+        Debug.Log(currentBreaks + "/" + puzzle.breakCount);
 
         // 퍼즐 완성
         if (currentBreaks == puzzle.breakCount)

@@ -217,6 +217,75 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 22279220}
   m_PrefabAsset: {fileID: 0}
+--- !u!1001 &58087065
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 647944285}
+    m_Modifications:
+    - target: {fileID: 2057874427958369506, guid: 6b6763449e237c9429b01d2b17c91618,
+        type: 3}
+      propertyPath: m_Name
+      value: EdgeCube
+      objectReference: {fileID: 0}
+    - target: {fileID: 2057874427958369507, guid: 6b6763449e237c9429b01d2b17c91618,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2057874427958369507, guid: 6b6763449e237c9429b01d2b17c91618,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2057874427958369507, guid: 6b6763449e237c9429b01d2b17c91618,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2057874427958369507, guid: 6b6763449e237c9429b01d2b17c91618,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2057874427958369507, guid: 6b6763449e237c9429b01d2b17c91618,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2057874427958369507, guid: 6b6763449e237c9429b01d2b17c91618,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2057874427958369507, guid: 6b6763449e237c9429b01d2b17c91618,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2057874427958369507, guid: 6b6763449e237c9429b01d2b17c91618,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2057874427958369507, guid: 6b6763449e237c9429b01d2b17c91618,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2057874427958369507, guid: 6b6763449e237c9429b01d2b17c91618,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2057874427958369507, guid: 6b6763449e237c9429b01d2b17c91618,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 6b6763449e237c9429b01d2b17c91618, type: 3}
 --- !u!1 &111426054
 GameObject:
   m_ObjectHideFlags: 0
@@ -712,6 +781,12 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 569459850}
   m_CullTransparentMesh: 0
+--- !u!4 &647944285 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 8554738097535104998, guid: 9f622c21a92ed0347ae961fd5c28043a,
+    type: 3}
+  m_PrefabInstance: {fileID: 8554738098026339156}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &671383858 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 824488360801685184, guid: b955d53d0655732468ee784d36b1c487,
@@ -1364,6 +1439,12 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 5733408643319427620, guid: e8207fb00b03a214983c5742c60f8e30,
     type: 3}
   m_PrefabInstance: {fileID: 1342151435}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1439651925 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2057874427958369506, guid: 6b6763449e237c9429b01d2b17c91618,
+    type: 3}
+  m_PrefabInstance: {fileID: 58087065}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1473764843
 PrefabInstance:
@@ -2433,6 +2514,11 @@ PrefabInstance:
       propertyPath: currentOpenPuzzleNameDisplay
       value: 
       objectReference: {fileID: 804327785}
+    - target: {fileID: 8554738097535104992, guid: 9f622c21a92ed0347ae961fd5c28043a,
+        type: 3}
+      propertyPath: EdgeCube
+      value: 
+      objectReference: {fileID: 1439651925}
     - target: {fileID: 8554738097535104993, guid: 9f622c21a92ed0347ae961fd5c28043a,
         type: 3}
       propertyPath: puzzleObject

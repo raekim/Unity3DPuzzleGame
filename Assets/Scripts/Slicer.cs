@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class Slicer : MonoBehaviour
 {
+    Slicers slicers;
+
     public enum SLICER_TYPE
     {
         RED,BLUE
@@ -30,8 +32,14 @@ public class Slicer : MonoBehaviour
     Cube[,,] puzzleCubes;
     int[] puzzleSize;           // 퍼즐의 z,y,x축 크기
     Vector3 clickOffSet;
+    float lastClickedTime;
 
     float minClampValue, maxClampValue;
+
+    private void Awake()
+    {
+        slicers = GetComponentInParent<Slicers>();
+    }
 
     private void Start()
     {
@@ -39,6 +47,8 @@ public class Slicer : MonoBehaviour
         GetComponentInChildren<SlicerCapsule>().capsuleClickDelegate += SlicerClick;
         GetComponentInChildren<SlicerCapsule>().capsuleDragDelegate += SlicerDrag;
         SetSlicerToStartPosition();
+
+        lastClickedTime = Time.time;
     }
 
     public void InitSlicer(Puzzle puzzle)
@@ -134,6 +144,17 @@ public class Slicer : MonoBehaviour
         var rayPoint = ray.GetPoint(distance);
 
         clickOffSet = transform.position - rayPoint;
+
+        // 더블 클릭 하면 0단계로 돌아옴
+        float currentClickedTime = Time.time;
+
+        if(currentClickedTime - lastClickedTime < .4f)
+        {
+            SetSlicerToStartPosition();
+            slicers.registerSlicerAction(this, sliceStep);
+        }
+
+        lastClickedTime = currentClickedTime;
     }
 
     void SlicerDrag()
@@ -155,6 +176,9 @@ public class Slicer : MonoBehaviour
 
         // 슬라이서 범위 clmap하고, slicerStep을 정한다
         transform.position = ClampAndSnapSlicerRange(transform.position);
+
+        // 슬라이서 부모 오브젝트에게 이 슬라이서의 행동을 보고한다
+        slicers.registerSlicerAction(this, sliceStep);
     }
 
     Vector3 ClampAndSnapSlicerRange(Vector3 slicerPosition)
@@ -219,13 +243,13 @@ public class Slicer : MonoBehaviour
             // 숨기기
             if (beforeStep < afterStep)
             {
-                for (int z = 0; z < puzzleSize[0]; ++z)
+                for (int i = beforeCubeX; i != afterCubeX; i -= dir)
                 {
-                    for (int y = 0; y < puzzleSize[1]; ++y)
+                    for (int z = 0; z < puzzleSize[0]; ++z)
                     {
-                        if (puzzleCubes[z, y, beforeCubeX].gameObject.activeSelf)
+                        for (int y = 0; y < puzzleSize[1]; ++y)
                         {
-                            for (int i = beforeCubeX; i != afterCubeX; i -= dir) puzzleCubes[z, y, i].gameObject.SetActive(false);
+                            puzzleCubes[z, y, i].gameObject.SetActive(false);
                         }
                     }
                 }
@@ -233,13 +257,13 @@ public class Slicer : MonoBehaviour
             // 보이기
             else if (beforeStep > afterStep)
             {
-                for (int z = 0; z < puzzleSize[0]; ++z)
+                for (int i = beforeCubeX; i != afterCubeX + dir; i += dir)
                 {
-                    for (int y = 0; y < puzzleSize[1]; ++y)
+                    for (int z = 0; z < puzzleSize[0]; ++z)
                     {
-                        if (puzzleCubes[z, y, beforeCubeX].gameObject.activeSelf)
+                        for (int y = 0; y < puzzleSize[1]; ++y)
                         {
-                            for (int i = beforeCubeX; i != afterCubeX + dir; i += dir) puzzleCubes[z, y, i].gameObject.SetActive(true);
+                            if (!puzzleCubes[z, y, i].isDestroyed) puzzleCubes[z, y, i].gameObject.SetActive(true);
                         }
                     }
                 }
@@ -267,13 +291,13 @@ public class Slicer : MonoBehaviour
             // 숨기기
             if (beforeStep < afterStep)
             {
-                for (int x = 0; x < puzzleSize[2]; ++x)
+                for (int i = beforeCubeZ; i != afterCubeZ; i -= dir)
                 {
-                    for (int y = 0; y < puzzleSize[1]; ++y)
+                    for (int x = 0; x < puzzleSize[2]; ++x)
                     {
-                        if (puzzleCubes[beforeCubeZ, y, x].gameObject.activeSelf)
+                        for (int y = 0; y < puzzleSize[1]; ++y)
                         {
-                            for (int i = beforeCubeZ; i != afterCubeZ; i -= dir) puzzleCubes[i, y, x].gameObject.SetActive(false);
+                            puzzleCubes[i, y, x].gameObject.SetActive(false);
                         }
                     }
                 }
@@ -281,13 +305,13 @@ public class Slicer : MonoBehaviour
             else if (beforeStep > afterStep)
             {
                 // 보이기
-                for (int x = 0; x < puzzleSize[2]; ++x)
+                for (int i = beforeCubeZ; i != afterCubeZ + dir; i += dir)
                 {
-                    for (int y = 0; y < puzzleSize[1]; ++y)
+                    for (int x = 0; x < puzzleSize[2]; ++x)
                     {
-                        if (puzzleCubes[beforeCubeZ, y, x].gameObject.activeSelf)
+                        for (int y = 0; y < puzzleSize[1]; ++y)
                         {
-                            for (int i = beforeCubeZ; i != afterCubeZ + dir; i += dir) puzzleCubes[i, y, x].gameObject.SetActive(true);
+                            if (!puzzleCubes[i, y, x].isDestroyed) puzzleCubes[i, y, x].gameObject.SetActive(true);
                         }
                     }
                 }

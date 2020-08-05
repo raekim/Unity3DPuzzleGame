@@ -5,13 +5,20 @@ using UnityEngine;
 public class Slicers : MonoBehaviour
 {
     public PuzzleManager puzzleManager;
+
     List<Slicer> redSlicers = new List<Slicer>();
     List<Slicer> blueSlicers = new List<Slicer>();
+    Slicer[] childSlicers;
+
+    Slicer currentActiveSlicer; // 현재 퍼즐을 슬라이스 하고 있는 slicer
+    bool isPuzzleSliced;
+
+    CameraRotationManager.CAMERA_LOCATION _currentCameraLoaction;
 
     private void Awake()
     {
         // puzzleManager 에 모든 slicer들 넘겨주기
-        Slicer[] childSlicers = GetComponentsInChildren<Slicer>();
+         childSlicers = GetComponentsInChildren<Slicer>();
         puzzleManager.SetSlicers(childSlicers);
 
         // red/blue slicer 따로 저장
@@ -29,8 +36,41 @@ public class Slicers : MonoBehaviour
         }
     }
 
+    private void Start()
+    {
+        currentActiveSlicer = null;
+        isPuzzleSliced = false;
+    }
+
+    public void registerSlicerAction(Slicer activeSlicer, int step)
+    {
+        if(currentActiveSlicer != null && step == 0)
+        {
+            currentActiveSlicer = null;
+            isPuzzleSliced = false;
+
+            UpdateBlueSlicersVisibility(_currentCameraLoaction);
+        }
+        else if(currentActiveSlicer == null && step > 0)
+        {
+            currentActiveSlicer = activeSlicer;
+            isPuzzleSliced = true;
+
+            // 현재 사용되고 있는 슬라이서를 제외한 나머지는 모두 숨긴다
+            foreach (Slicer slicer in childSlicers)
+            {
+                if (activeSlicer != slicer) slicer.gameObject.SetActive(false);
+            }
+        }
+
+        puzzleManager.SetEdgeCubeVisibility(isPuzzleSliced);
+    }
+
     public void UpdateBlueSlicersVisibility(CameraRotationManager.CAMERA_LOCATION currentCameraLoaction)
     {
+        _currentCameraLoaction = currentCameraLoaction;
+        if (isPuzzleSliced) return;
+
         // 카메라가 바라보는 위치에 따라 어떤 blue slicer를 보이게 할 것인지 결정
         Slicer.SLICER_POSITION visibleBluePosition = Slicer.SLICER_POSITION.MAX;
 
