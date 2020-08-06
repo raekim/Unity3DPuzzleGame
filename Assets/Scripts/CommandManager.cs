@@ -32,13 +32,15 @@ public class CommandManager : MonoBehaviour
     {
         myCommandState = commandMode.DESTROY;
         cameraRot.camRotAllowed = false;
+        puzzleManager.slicersParent.SetActive(false);
     }
 
     public void SetCommandStateToDefault()
     {
         myCommandState = commandMode.DEFAULT;
         cameraRot.camRotAllowed = true;
-        
+        puzzleManager.slicersParent.SetActive(true);
+
         // 현재 조작 모드가 destroy 또는 protect라면 적절한 UI애니메이션 재생
     }
 
@@ -46,6 +48,7 @@ public class CommandManager : MonoBehaviour
     {
         myCommandState = commandMode.PROTECT;
         cameraRot.camRotAllowed = false;
+        puzzleManager.slicersParent.SetActive(false);
     }
 
     private void Awake()

@@ -2519,6 +2519,16 @@ PrefabInstance:
       propertyPath: EdgeCube
       value: 
       objectReference: {fileID: 1439651925}
+    - target: {fileID: 8554738097535104992, guid: 9f622c21a92ed0347ae961fd5c28043a,
+        type: 3}
+      propertyPath: slicersParent
+      value: 
+      objectReference: {fileID: 776437860}
+    - target: {fileID: 8554738097535104992, guid: 9f622c21a92ed0347ae961fd5c28043a,
+        type: 3}
+      propertyPath: edgeCube
+      value: 
+      objectReference: {fileID: 1439651925}
     - target: {fileID: 8554738097535104993, guid: 9f622c21a92ed0347ae961fd5c28043a,
         type: 3}
       propertyPath: puzzleObject

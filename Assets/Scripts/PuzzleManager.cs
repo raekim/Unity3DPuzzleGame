@@ -5,7 +5,8 @@ using UnityEngine.UI;
 
 public class PuzzleManager : MonoBehaviour
 {
-    public GameObject EdgeCube;
+    public GameObject slicersParent;
+    public GameObject edgeCube;
     public CommandManager commandManager;
     public CameraRotationManager cameraRot;
     public Text puzzleFileName; // 퍼즐 파일 열기에 쓰이는 이름
@@ -24,12 +25,12 @@ public class PuzzleManager : MonoBehaviour
         LoadAndGeneratePuzzle("Sofa");
         puzzleBg = Resources.Load<Material>("Materials/bg");
 
-        EdgeCube.SetActive(false);
+        edgeCube.SetActive(false);
     }
 
     public void SetEdgeCubeVisibility(bool value)
     {
-        EdgeCube.SetActive(value);
+        edgeCube.SetActive(value);
     }
 
     public void SetSlicers(Slicer[] _slicers)
@@ -85,7 +86,7 @@ public class PuzzleManager : MonoBehaviour
         }
 
         // Edge Cube 사이즈를 새로운 퍼즐에 맞게 조절
-        EdgeCube.transform.localScale = new Vector3(puzzle.xLen + 0.05f, puzzle.yLen + 0.05f, puzzle.zLen + 0.05f);
+        edgeCube.transform.localScale = new Vector3(puzzle.xLen + 0.05f, puzzle.yLen + 0.05f, puzzle.zLen + 0.05f);
     }
 
     public void RegisterCubeDestroy()
